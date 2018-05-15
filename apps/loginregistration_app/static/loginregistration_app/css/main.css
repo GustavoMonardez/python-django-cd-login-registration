@@ -27,8 +27,16 @@ form{
     margin-top:10px;
 }
 .error{
-    color:#d9534f;
+    text-align: center;
+    margin:auto;
+    background-color:#d9534f;
+    color:whitesmoke;
 }
+
+.error p{
+    margin:0px;
+}
+
 .success{
     color:#5cb85c;
 }

@@ -11,7 +11,13 @@
 </head>
 <body>
     <div class="wrapper">    
-        <h1>Success! Welcome, John!</h1>
+        <h1>Success! Welcome, {{ request.session.first_name }}!</h1>
+        <p class="success">Successfully {{ request.session.status }}!</p>
+        <form action="/logout" method="POST">
+            {% csrf_token %}
+                <input type="submit" value="Logout" class="btn btn-danger">
+            </div>
+        </form>
     </div>    
 </body>
 </html>

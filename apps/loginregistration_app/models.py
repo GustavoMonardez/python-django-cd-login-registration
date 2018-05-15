@@ -9,12 +9,12 @@ class UserManager(models.Manager):
         # first name validation
         if len(data["first_name"]) < 2:
             errors["first_name"] = "First name must contain at least 2 characters (letters only)"
-        if not data["first_name"].isalpha():
+        elif not data["first_name"].isalpha():
             errors["first_name"] = "First name must only contain letters"
         # last name validation
         if len(data["last_name"]) < 2:
             errors["last_name"] = "Last name must contain at least 2 characters (letters only)"
-        if not data["last_name"].isalpha():
+        elif not data["last_name"].isalpha():
             errors["last_name"] = "Last name must only contain letters"
         # check if account already registered        
         if len(User.objects.filter(email = data["email"])) > 0:
@@ -26,8 +26,9 @@ class UserManager(models.Manager):
         # password validation
         if data["password"] != data["cpassword"]:
             errors["password"] = "Password and confirm password must match"
-        if len(data["password"]) < 8:
+        elif len(data["password"]) < 8:
             errors["password"] = "Password must be at least 8 characters long"
+        # return either a user or an error
         if not errors:
             password = bcrypt.hashpw(data["password"].encode(), bcrypt.gensalt())
             user = User.objects.create(first_name=data["first_name"],last_name=data["last_name"],email=data["email"],password=password)
@@ -39,11 +40,11 @@ class UserManager(models.Manager):
     
     def validate_login(self,data):
         errors = {}
-        user = User.objects.get(email=data["email"])
-        if not user.checkpw(data["password"].encode(), user.pw_hash.encode()) or not User.objects.filter(email = data["email"]):
+        user = User.objects.filter(email=data["email"])
+        if not user or not bcrypt.checkpw(data["password"].encode(), user[0].password.encode()) or not User.objects.filter(email = data["email"]):
             errors["login"] = "Could not log in"
         if not errors:
-            context = {"obj":user,"status":True}
+            context = {"obj":user[0],"status":True}
             return context
         else:
             context = {"obj":errors,"status":False}

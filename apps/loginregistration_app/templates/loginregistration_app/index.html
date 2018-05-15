@@ -11,9 +11,11 @@
 </head>
 <body>
     <div class="wrapper"> 
+        <div class="error">
         {% for message in messages %}
-        <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{message}}</p>
+        <p>{{message}}</p>
         {% endfor %}   
+        </div>
         <form action="/register" method="POST">
             {% csrf_token %}
             <h1>Registration</h1>   
@@ -39,8 +41,7 @@
         </form>
         <form action="/login" method="POST">
             {% csrf_token %}
-            <h1>Login</h1>   
-
+            <h1>Login</h1>
             <label for="email">Email:</label>
             <input type="text" name="email" class="form-control">
 
